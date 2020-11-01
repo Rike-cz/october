@@ -9,7 +9,7 @@ class Meta extends Model
     public $timestamps = false;
 
     public $morphTo = [
-        'taggable' => []
+        'metable' => []
     ];
 
     public $fillable = [

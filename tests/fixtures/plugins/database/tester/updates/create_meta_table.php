@@ -11,8 +11,8 @@ class CreateMetaTable extends Migration
         Schema::create('database_tester_meta', function ($table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
-            $table->integer('taggable_id')->unsigned()->index()->nullable();
-            $table->string('taggable_type')->nullable();
+            $table->integer('metable_id')->unsigned()->index()->nullable();
+            $table->string('metable_type')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();

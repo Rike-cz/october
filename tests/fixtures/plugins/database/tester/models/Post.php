@@ -31,7 +31,11 @@ class Post extends Model
     ];
 
     public $morphOne = [
-        'meta' => ['Database\Tester\Models\Meta', 'name' => 'taggable'],
+        'meta' => ['Database\Tester\Models\Meta', 'name' => 'metable'],
+    ];
+
+    public $morphToMany = [
+        'tags' => ['Database\Tester\Models\Tag', 'name' => 'taggable', 'table' => 'database_tester_taggables', 'pivot' => ['comment']],
     ];
 }
 

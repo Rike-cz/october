@@ -49,7 +49,7 @@ class Author extends Model
     ];
 
     public $morphOne = [
-        'meta' => ['Database\Tester\Models\Meta', 'name' => 'taggable'],
+        'meta' => ['Database\Tester\Models\Meta', 'name' => 'metable'],
     ];
 }
 

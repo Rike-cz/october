@@ -55,36 +55,36 @@ class MorphOneModelTest extends PluginTestCase
         // Set by Model object
         $post->meta = $meta1;
         $post->save();
-        $this->assertEquals($post->id, $meta1->taggable_id);
-        $this->assertEquals(get_class($post), $meta1->taggable_type);
+        $this->assertEquals($post->id, $meta1->metable_id);
+        $this->assertEquals(get_class($post), $meta1->metable_type);
         $this->assertEquals('Question', $post->meta->meta_title);
 
         // Double check
         $meta1 = Meta::find($meta1->id);
-        $this->assertEquals($post->id, $meta1->taggable_id);
-        $this->assertEquals(get_class($post), $meta1->taggable_type);
+        $this->assertEquals($post->id, $meta1->metable_id);
+        $this->assertEquals(get_class($post), $meta1->metable_type);
 
         // Set by primary key
         $metaId = $meta2->id;
         $author->meta = $metaId;
         $author->save();
         $meta2 = Meta::find($metaId);
-        $this->assertEquals($author->id, $meta2->taggable_id);
-        $this->assertEquals(get_class($author), $meta2->taggable_type);
+        $this->assertEquals($author->id, $meta2->metable_id);
+        $this->assertEquals(get_class($author), $meta2->metable_type);
         $this->assertEquals('Comment', $author->meta->meta_title);
 
         // Nullify
         $author->meta = null;
         $author->save();
         $meta = Meta::find($metaId);
-        $this->assertNull($meta->taggable_type);
-        $this->assertNull($meta->taggable_id);
-        $this->assertNull($meta->taggable);
+        $this->assertNull($meta->metable_type);
+        $this->assertNull($meta->metable_id);
+        $this->assertNull($meta->metable);
 
         // Deferred in memory
         $author->meta = $meta3;
         $this->assertEquals('Answer', $author->meta->meta_title);
-        $this->assertEquals($author->id, $meta3->taggable_id);
+        $this->assertEquals($author->id, $meta3->metable_id);
     }
 
     public function testSetRelationValueTwice()
@@ -110,8 +110,8 @@ class MorphOneModelTest extends PluginTestCase
         $author->save();
 
         $meta = Meta::find($metaId);
-        $this->assertEquals($author->id, $meta->taggable_id);
-        $this->assertEquals(get_class($author), $meta->taggable_type);
+        $this->assertEquals($author->id, $meta->metable_id);
+        $this->assertEquals(get_class($author), $meta->metable_type);
     }
 
     public function testGetRelationValue()
@@ -119,8 +119,8 @@ class MorphOneModelTest extends PluginTestCase
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
         $meta = Meta::create([
-            'taggable_id' => $author->id,
-            'taggable_type' => get_class($author),
+            'metable_id' => $author->id,
+            'metable_type' => get_class($author),
             'meta_title' => 'Question',
             'meta_description' => 'Industry',
             'meta_keywords' => 'major',
@@ -155,7 +155,7 @@ class MorphOneModelTest extends PluginTestCase
 
         // Deferred add
         $author->meta()->add($meta, $sessionKey);
-        $this->assertNull($meta->taggable_id);
+        $this->assertNull($meta->metable_id);
         $this->assertNull($author->meta);
 
         $this->assertEquals(0, $author->meta()->count());
@@ -165,7 +165,7 @@ class MorphOneModelTest extends PluginTestCase
         $author->save(null, $sessionKey);
         $meta = Meta::find($metaId);
         $this->assertEquals(1, $author->meta()->count());
-        $this->assertEquals($author->id, $meta->taggable_id);
+        $this->assertEquals($author->id, $meta->metable_id);
         $this->assertEquals('Comment', $author->meta->meta_title);
 
         // New session
@@ -175,14 +175,14 @@ class MorphOneModelTest extends PluginTestCase
         $author->meta()->remove($meta, $sessionKey);
         $this->assertEquals(1, $author->meta()->count());
         $this->assertEquals(0, $author->meta()->withDeferred($sessionKey)->count());
-        $this->assertEquals($author->id, $meta->taggable_id);
+        $this->assertEquals($author->id, $meta->metable_id);
         $this->assertEquals('Comment', $author->meta->meta_title);
 
         // Commit deferred
         $author->save(null, $sessionKey);
         $meta = Meta::find($metaId);
         $this->assertEquals(0, $author->meta()->count());
-        $this->assertNull($meta->taggable_id);
+        $this->assertNull($meta->metable_id);
         $this->assertNull($author->meta);
     }
 }
